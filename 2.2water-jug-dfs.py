@@ -21,7 +21,6 @@ def water_jug_dfs(cap1, cap2, target):
         print("Error: No solution possible.")
         return None
 
-    # Stack for DFS: stores (current_state, path_history)
     stack = []
     start_state = (0, 0)
     stack.append((start_state, [start_state]))
@@ -32,25 +31,24 @@ def water_jug_dfs(cap1, cap2, target):
     print(f"\n--- DFS Solving (Deep Path) ---")
 
     while stack:
-        current_state, path = stack.pop() # Pop from end (LIFO)
+        current_state, path = stack.pop() 
         j1, j2 = current_state
 
         if j1 == target or j2 == target:
             return path
 
-        # Generate next moves
-        # Note: The order we add to the stack determines the search direction.
-        moves = []
-        moves.append((cap1, j2)) # Fill 1
-        moves.append((j1, cap2)) # Fill 2
-        moves.append((0, j2))    # Empty 1
-        moves.append((j1, 0))    # Empty 2
         
-        # Pour 1 -> 2
+        moves = []
+        moves.append((cap1, j2)) 
+        moves.append((j1, cap2)) 
+        moves.append((0, j2))    
+        moves.append((j1, 0))    
+        
+        
         pour_1_to_2 = min(j1, cap2 - j2)
         moves.append((j1 - pour_1_to_2, j2 + pour_1_to_2))
         
-        # Pour 2 -> 1
+        
         pour_2_to_1 = min(j2, cap1 - j1)
         moves.append((j1 + pour_2_to_1, j2 - pour_2_to_1))
 
@@ -74,7 +72,6 @@ if __name__ == "__main__":
             print("=" * 50)
             
             for i, state in enumerate(path):
-                # Calculate action
                 if i == 0:
                     action = "STARTING STATE"
                 else:
@@ -82,11 +79,9 @@ if __name__ == "__main__":
                 
                 j1, j2 = state
                 
-                # Print nicely formatted block
                 print(f"STEP {i}: {action}")
                 print(f"   (Jug A: {j1}L, Jug B: {j2}L)")
                 
-                # Print an arrow unless it's the last step
                 if i < len(path) - 1:
                     print("         │")
                     print("         ▼")
