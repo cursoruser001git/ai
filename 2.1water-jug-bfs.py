@@ -1,4 +1,3 @@
-#3,5,4; 6,4,2; 7,3,5
 from collections import deque
 
 def gcd(a, b):
@@ -20,7 +19,6 @@ def get_action_name(old_state, new_state, cap1, cap2):
     return "Start"
 
 def water_jug_bfs(cap1, cap2, target):
-    # Sanity Checks
     if target > max(cap1, cap2):
         print("Error: Target cannot exceed jug capacity.")
         return None
@@ -28,8 +26,6 @@ def water_jug_bfs(cap1, cap2, target):
         print("Error: No solution possible (GCD rule).")
         return None
 
-    # Queue for BFS: stores (current_state, path_history)
-    # State is (jug1_amount, jug2_amount)
     queue = deque()
     start_state = (0, 0)
     queue.append((start_state, [start_state]))
@@ -40,25 +36,22 @@ def water_jug_bfs(cap1, cap2, target):
     print(f"\n--- BFS Solving (Shortest Path) ---")
 
     while queue:
-        current_state, path = queue.popleft() # Dequeue (FIFO)
+        current_state, path = queue.popleft() 
         j1, j2 = current_state
 
-        # Check Goal
+        
         if j1 == target or j2 == target:
             return path
 
-        # Generate all possible next moves
         moves = []
-        moves.append((cap1, j2)) # Fill 1
-        moves.append((j1, cap2)) # Fill 2
-        moves.append((0, j2))    # Empty 1
-        moves.append((j1, 0))    # Empty 2
+        moves.append((cap1, j2)) 
+        moves.append((j1, cap2)) 
+        moves.append((0, j2))    
+        moves.append((j1, 0))    
         
-        # Pour 1 -> 2
         pour_1_to_2 = min(j1, cap2 - j2)
         moves.append((j1 - pour_1_to_2, j2 + pour_1_to_2))
         
-        # Pour 2 -> 1
         pour_2_to_1 = min(j2, cap1 - j1)
         moves.append((j1 + pour_2_to_1, j2 - pour_2_to_1))
 
@@ -82,7 +75,6 @@ if __name__ == "__main__":
             print("=" * 50)
             
             for i, state in enumerate(path):
-                # Calculate action
                 if i == 0:
                     action = "STARTING STATE"
                 else:
@@ -90,11 +82,9 @@ if __name__ == "__main__":
                 
                 j1, j2 = state
                 
-                # Print nicely formatted block
                 print(f"STEP {i}: {action}")
                 print(f"   (Jug A: {j1}L, Jug B: {j2}L)")
                 
-                # Print an arrow unless it's the last step
                 if i < len(path) - 1:
                     print("         │")
                     print("         ▼")
